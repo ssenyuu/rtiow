@@ -1,5 +1,5 @@
 #include "ppm.cpp"
 
 int main() {
-    outputPPM(1000000, 1000000);
+    outputPPM(1000, 1000);
 }

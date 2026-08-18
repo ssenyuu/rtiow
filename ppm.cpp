@@ -1,15 +1,8 @@
 // deals with outputting PPM files
 #pragma once
 #include <iostream>
-
-/*
- write rows top-down, each row written left-right
- +--1-->
- |
- 2
- |
- V
-*/
+#include "vec3.h"
+#include "color.h"
 
 #define MAX_COLOR 255
 
@@ -19,17 +12,10 @@ void outputPPM(int width, int height) {
     for (int j = 0; j < height; ++j) {
         std::clog << "\rScanlines remaining: " << (height - j) << std::flush;
         for (int i = 0; i < width; ++i) {
-            auto r = double(i) / (width - 1);
-            auto g = double(j) / (height - 1);
-            auto b = 0.0;
-
-            int ir = int(r * 255.999);
-            int ig = int(g * 255.999);
-            int ib = int(b * 255.999);
-
-            std::cout << ir << ' ' << ig << ' ' << ib << '\n';
+            auto pixel_color = color(double(i) / (width - 1), double(j) / (height - 1), 0);
+            write_color(std::cout, pixel_color);
         }
     }
 
-    std::clog << "\rDone. \n";
+    std::clog << "\rDone.                                                  \n";
 }
