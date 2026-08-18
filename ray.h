@@ -1,23 +1,23 @@
-#ifndef RAY_H
-#define RAY_H
+#pragma once
 
 #include "vec3.h"
+
+// I am not proud of this.
+using vect3 = vec3<>;
 
 class ray {
     public:
         ray() {};
-        ray(const point3 &orig, const vec3 &dir) : orig(orig), dir(dir) {};
+        ray(const point3 &orig, const vect3 &dir) : orig(orig), dir(dir) {};
 
         const point3& origin() const { return orig; }
-        const vec3& direction() const { return dir; }
+        const vect3& direction() const { return dir; }
 
-        vec3 at(Float t) {
+        vect3 at(Float t) {
             return orig + t * dir;
         }
 
     private:
         point3 orig;
-        vec3 dir;
+        vect3 dir;
 };
-
-#endif

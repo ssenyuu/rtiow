@@ -1,11 +1,20 @@
-#ifndef VEC3_H
-#define VEC3_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
 
 using Float = double;
 
+enum class Vec3Type {
+    Spatial,
+    Color
+};
+
+// The use of templated vec3 objects provides compile-time safety against cross-type operations
+//  - (e.g. attempting to add a color to a point)
+// But does not forbid nonsensical operations within a single type (e.g. cross product of colors)
+
+template <Vec3Type T = Vec3Type::Spatial>
 class vec3 {
     public:
         Float e[3];
@@ -54,51 +63,58 @@ class vec3 {
         }
 };
 
-using point3 = vec3;
+using point3 = vec3<Vec3Type::Spatial>;
 
-inline std::ostream& operator<<(std::ostream& out, const vec3& v) {
+template <Vec3Type T>
+inline std::ostream& operator<<(std::ostream& out, const vec3<T>& v) {
     return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
 }
 
-inline vec3 operator+(const vec3& u, const vec3& v) {
+template <Vec3Type T>
+inline vec3<T> operator+(const vec3<T>& u, const vec3<T>& v) {
     return vec3(u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]);
 }
 
-inline vec3 operator-(const vec3& u, const vec3& v) {
+template <Vec3Type T>
+inline vec3<T> operator-(const vec3<T>& u, const vec3<T>& v) {
     return vec3(u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]);
 }
 
-inline vec3 operator*(const vec3& u, const vec3& v) {
+template <Vec3Type T>
+inline vec3<T> operator*(const vec3<T>& u, const vec3<T>& v) {
     return vec3(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
 }
 
-inline vec3 operator*(Float t, const vec3& v) {
+template <Vec3Type T>
+inline vec3<T> operator*(Float t, const vec3<T>& v) {
     return vec3(t*v.e[0], t*v.e[1], t*v.e[2]);
 }
 
-inline vec3 operator*(const vec3& v, Float t) {
+template <Vec3Type T>
+inline vec3<T> operator*(const vec3<T>& v, Float t) {
     return t * v;
 }
 
-inline vec3 operator/(const vec3& v, Float t) {
+template <Vec3Type T>
+inline vec3<T> operator/(const vec3<T>& v, Float t) {
     return (1/t) * v;
 }
 
-inline Float dot(const vec3& u, const vec3& v) {
+template <Vec3Type T>
+inline Float dot(const vec3<T>& u, const vec3<T>& v) {
     return u.e[0] * v.e[0]
          + u.e[1] * v.e[1]
          + u.e[2] * v.e[2];
 }
 
-inline vec3 cross(const vec3& u, const vec3& v) {
+template <Vec3Type T>
+inline vec3<T> cross(const vec3<T>& u, const vec3<T>& v) {
     return vec3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
                 u.e[2] * v.e[0] - u.e[0] * v.e[2],
                 u.e[0] * v.e[1] - u.e[1] * v.e[0]);
 }
 
-inline vec3 unit_vector(const vec3& v) {
+template <Vec3Type T>
+inline vec3<T> unit_vector(const vec3<T>& v) {
     return v / v.length();
 }
-
-
-#endif
