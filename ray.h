@@ -3,7 +3,7 @@
 #include "vec3.h"
 
 // I am not proud of this.
-using vect3 = vec3<>;
+using vect3 = vec3<Vec3Type::Spatial>;
 
 class ray {
     public:

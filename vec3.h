@@ -12,9 +12,8 @@ enum class Vec3Type {
 
 // The use of templated vec3 objects provides compile-time safety against cross-type operations
 //  - (e.g. attempting to add a color to a point)
-// But does not forbid nonsensical operations within a single type (e.g. cross product of colors)
 
-template <Vec3Type T = Vec3Type::Spatial>
+template <Vec3Type T>
 class vec3 {
     public:
         Float e[3];
@@ -72,22 +71,22 @@ inline std::ostream& operator<<(std::ostream& out, const vec3<T>& v) {
 
 template <Vec3Type T>
 inline vec3<T> operator+(const vec3<T>& u, const vec3<T>& v) {
-    return vec3(u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]);
+    return vec3<T>(u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]);
 }
 
 template <Vec3Type T>
 inline vec3<T> operator-(const vec3<T>& u, const vec3<T>& v) {
-    return vec3(u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]);
+    return vec3<T>(u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]);
 }
 
 template <Vec3Type T>
 inline vec3<T> operator*(const vec3<T>& u, const vec3<T>& v) {
-    return vec3(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
+    return vec3<T>(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
 }
 
 template <Vec3Type T>
 inline vec3<T> operator*(Float t, const vec3<T>& v) {
-    return vec3(t*v.e[0], t*v.e[1], t*v.e[2]);
+    return vec3<T>(t*v.e[0], t*v.e[1], t*v.e[2]);
 }
 
 template <Vec3Type T>
@@ -109,7 +108,7 @@ inline Float dot(const vec3<T>& u, const vec3<T>& v) {
 
 template <Vec3Type T>
 inline vec3<T> cross(const vec3<T>& u, const vec3<T>& v) {
-    return vec3(u.e[1] * v.e[2] - u.e[2] * v.e[1],
+    return vec3<T>(u.e[1] * v.e[2] - u.e[2] * v.e[1],
                 u.e[2] * v.e[0] - u.e[0] * v.e[2],
                 u.e[0] * v.e[1] - u.e[1] * v.e[0]);
 }
