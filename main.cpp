@@ -1,8 +1,20 @@
 #include "ppm.cpp"
 #include "ray.h"
 
+bool hit_sphere(const point3& center, Float radius, const ray& r) {
+    auto oc = center - r.origin(); // vec from ray origin to sphere center
+    auto a = dot(r.direction(), r.direction());
+    auto b = -2.0 * dot(r.direction(), oc);
+    auto c = dot(oc, oc) - radius * radius;
+
+    auto discriminant = b*b - 4*a*c;
+    return discriminant >= 0;
+}
 
 color ray_color(const ray& r) {
+    if (hit_sphere(point3(0.0, 0.0, -1.0), 0.5, r))
+        return color(1.0, 0, 0);
+
     auto unit_vec = unit_vector(r.direction());
     // unit_vec.y \in [-1, 1] but we want to normalize to [0, 1] for lerp
     auto a = 0.5 * (unit_vec.y() + 1);
